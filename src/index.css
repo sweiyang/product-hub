@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ocbc-red: #E1261B;
+  --color-ocbc-hover: #B71C1C;
+  --color-ocbc-bg: #FFFFFF;
+  --color-ocbc-panel: #F5F5F5;
+  --color-ocbc-border: #E0E0E0;
+  --color-ocbc-text: #1A1A1A;
+  --color-ocbc-secondary: #666666;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-ocbc-bg text-ocbc-text;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(225, 38, 27, 0.03) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(225, 38, 27, 0.02) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(225, 38, 27, 0.03) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(225, 38, 27, 0.02) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+}
+
+.ocbc-gradient {
+  background: linear-gradient(135deg, #ED1C24 0%, #B3151B 100%);
+}
+
+.glass-card {
+  @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-lg;
+}
