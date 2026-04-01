@@ -12,11 +12,6 @@ export interface MonthlyData {
   activeUsers: number;
 }
 
-export interface CostBreakdown {
-  category: string;
-  amount: number;
-}
-
 export interface UsageDimension {
   name: string;
   value: string;
@@ -29,11 +24,9 @@ export interface QuarterMetric {
   quarter: string;
   activeUsers: number;
   usage: number;
-  cost: number;
   teamMembers: number;
   team: TeamMember[];
   monthlyData: MonthlyData[];
-  costBreakdown: CostBreakdown[];
   usageDimensions: UsageDimension[];
 }
 

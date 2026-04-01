@@ -9,7 +9,6 @@ import {
   MessageSquare, 
   Info,
   Users,
-  DollarSign,
   Activity,
   Filter,
   LayoutGrid,
@@ -196,10 +195,10 @@ export default function App() {
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-1.5 text-[9px] font-black text-ocbc-secondary/60 uppercase tracking-widest">
-                        <DollarSign className="w-3 h-3" />
-                        <span>Quarterly Cost</span>
+                        <Activity className="w-3 h-3" />
+                        <span>Usage</span>
                       </div>
-                      <div className="text-lg font-black text-ocbc-text">${(product.metrics[0].cost / 1000).toFixed(0)}K</div>
+                      <div className="text-lg font-black text-ocbc-text">{(product.metrics[0].usage / 1000).toFixed(0)}K</div>
                     </div>
                   </div>
 
@@ -474,56 +473,6 @@ function ProductDetail({ product, onBack }: { product: Product, onBack: () => vo
                     </div>
                   </motion.div>
 
-                  {/* Cost Card */}
-                  <motion.div 
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: { opacity: 1, y: 0 }
-                    }}
-                    whileHover={{ y: -5 }}
-                    className="md:col-span-5 bg-white rounded-[3rem] p-10 border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col justify-between group"
-                  >
-                    <div className="flex items-center justify-between mb-8">
-                      <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center group-hover:bg-ocbc-red group-hover:text-white transition-colors">
-                        <DollarSign className="w-7 h-7" />
-                      </div>
-                      <div className="px-4 py-1.5 bg-slate-100 text-slate-500 text-[10px] font-black rounded-full uppercase tracking-widest">Budget</div>
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-2">Quarterly Burn</h3>
-                      <div className="text-6xl font-black text-slate-900 tracking-tighter mb-4">${currentMetric.cost.toLocaleString()}</div>
-                      <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <motion.div 
-                          initial={{ width: 0 }}
-                          animate={{ width: '75%' }}
-                          className="h-full bg-ocbc-red" 
-                        />
-                      </div>
-                      <div className="flex justify-between mt-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        <span>Spent: 75%</span>
-                        <span>Remaining: $45K</span>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                  {/* Efficiency Card */}
-                  <motion.div 
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: { opacity: 1, y: 0 }
-                    }}
-                    whileHover={{ y: -5 }}
-                    className="md:col-span-3 bg-blue-600 rounded-[3rem] p-10 text-white shadow-xl shadow-blue-600/20 flex flex-col justify-between group"
-                  >
-                    <div className="w-14 h-14 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-6">
-                      <Zap className="w-7 h-7 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-white/60 uppercase tracking-[0.3em] mb-2">Efficiency</h3>
-                      <div className="text-5xl font-black tracking-tighter mb-2">${(currentMetric.cost / currentMetric.usage).toFixed(2)}</div>
-                      <p className="text-white/60 text-[10px] font-black uppercase tracking-widest leading-tight">Cost per hour of exercise</p>
-                    </div>
-                  </motion.div>
 
                   {/* CSAT Card */}
                   <motion.div 
@@ -688,27 +637,6 @@ function ProductDetail({ product, onBack }: { product: Product, onBack: () => vo
                     </div>
                   </div>
 
-                  <div className="space-y-8 bg-slate-50/50 p-8 rounded-[2.5rem] border border-slate-100">
-                    <div className="flex items-center justify-between">
-                      <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm">
-                        <DollarSign className="w-8 h-8 text-ocbc-red" />
-                      </div>
-                      <div className="text-5xl font-black text-slate-900 tracking-tighter">${(currentMetric.cost / 1000).toFixed(1)}K</div>
-                    </div>
-                    <div>
-                      <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Cost Breakdown</div>
-                      <div className="space-y-3">
-                        {currentMetric.costBreakdown.length > 0 ? currentMetric.costBreakdown.map((item, i) => (
-                          <div key={i} className="flex items-center justify-between">
-                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{item.category}</span>
-                            <span className="text-[10px] font-black text-slate-900">${(item.amount / 1000).toFixed(1)}K</span>
-                          </div>
-                        )) : (
-                          <p className="text-[10px] text-slate-400 italic">No breakdown available for this quarter.</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
 
                   <div className="space-y-8 bg-slate-50/50 p-8 rounded-[2.5rem] border border-slate-100">
                     <div className="flex items-center justify-between">
