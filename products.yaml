@@ -2,6 +2,7 @@
   title: Indexing Hub
   category: Risk
   sinceDate: Jan 2023
+  activeUsersLabel: Active Users
   description: Advanced real-time risk assessment engine for transaction monitoring and credit scoring.
   logo: "\U0001F6E1️"
   why: To reduce manual intervention in credit approvals and provide instant risk scoring for digital banking customers.
@@ -122,6 +123,7 @@
   title: FraudGuard Pro
   category: Fraud
   sinceDate: Mar 2023
+  activeUsersLabel: Active Users
   description: Machine learning powered fraud detection system protecting customer accounts from unauthorized access.
   logo: "\U0001F50D"
   why: Rising sophisticated phishing and account takeover attacks required a more proactive defense mechanism.
@@ -196,6 +198,7 @@
   title: CoreConnect API
   category: Central Service
   sinceDate: Jun 2022
+  activeUsersLabel: Active Users
   description: Unified API gateway for internal services to access core banking data securely.
   logo: "\U0001F50C"
   why: Legacy systems were difficult to integrate with. We needed a standardized way for new apps to talk to the core.
@@ -270,6 +273,7 @@
   title: IdentityVault
   category: Central Service
   sinceDate: Sep 2023
+  activeUsersLabel: Active Users
   description: Secure storage and management of customer identity documents and KYC data.
   logo: "\U0001F194"
   why: To centralize KYC documents and ensure compliance with data privacy regulations across all branches.

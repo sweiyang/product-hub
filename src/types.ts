@@ -50,6 +50,7 @@ export interface Product {
   logo: string;
   why: string;
   what: string;
+  activeUsersLabel?: string;
   metrics: QuarterMetric[];
   changeLogs: ChangeLog[];
   feedbacks: Feedback[];

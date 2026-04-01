@@ -189,7 +189,7 @@ export default function App() {
                     <div className="space-y-1">
                       <div className="flex items-center gap-1.5 text-[9px] font-black text-ocbc-secondary/60 uppercase tracking-widest">
                         <Users className="w-3 h-3" />
-                        <span>Active Users</span>
+                        <span>{product.activeUsersLabel || 'Active Users'}</span>
                       </div>
                       <div className="text-lg font-black text-ocbc-text">{(product.metrics[0].activeUsers / 1000).toFixed(1)}K</div>
                     </div>
