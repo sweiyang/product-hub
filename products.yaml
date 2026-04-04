@@ -1,333 +1,249 @@
 - id: '1'
   title: Indexing Hub
-  category: Risk
-  sinceDate: Jan 2023
-  activeUsersLabel: Active Users
-  description: Advanced real-time risk assessment engine for transaction monitoring and credit scoring.
-  logo: "\U0001F6E1️"
-  why: To reduce manual intervention in credit approvals and provide instant risk scoring for digital banking customers.
-  what: A high-throughput scoring engine that processes thousands of data points per second to generate risk profiles.
+  category: Central Service
+  sinceDate: Mid 2025
+  activeUsersLabel: Usage
+  description: "Full lifecycle of Knowledge Base Creation: Parsing \u2192 Chunking \u2192 Embedding \u2192 Indexing"
+  logo: "\U0001F5C4\uFE0F"
+  why: To provide a standardized pipeline for knowledge base creation, enabling teams to build and maintain high-quality searchable indexes from raw data.
+  what: End-to-End Indexing
   metrics:
-    - quarter: Q2 2025
-      activeUsers: 1250
-      usage: 85000
-      teamMembers: 12
+    - quarter: Q1 2026
+      activeUsers: 6421
+      usage: 6421
+      teamMembers: 3
       team:
-        - name: Alice
-          role: PM
-          avatar: 'https://picsum.photos/seed/alice/100/100'
-        - name: Bob
-          role: Engineer
-          avatar: 'https://picsum.photos/seed/bob/100/100'
-        - name: Charlie
-          role: Designer
-          avatar: 'https://picsum.photos/seed/charlie/100/100'
-        - name: David
-          role: Ops
-          avatar: 'https://picsum.photos/seed/david/100/100'
-      monthlyData:
-        - month: Apr
-          usage: 25000
-          activeUsers: 1150
-        - month: May
-          usage: 28000
-          activeUsers: 1200
-        - month: Jun
-          usage: 32000
-          activeUsers: 1250
-      usageDimensions:
-        - name: Weekly Active Users
-          value: 1.2K
-          change: +5%
-          isPositive: true
-          description: Average weekly number of users who exercised
-        - name: Total Exercises
-          value: 85K
-          change: +12%
-          isPositive: true
-          description: Total number of users who exercised
-        - name: Hours Logged
-          value: 0.8M
-          change: '-2%'
-          isPositive: false
-          description: Total hours exercised
-    - quarter: Q1 2025
-      activeUsers: 1100
-      usage: 78000
-      teamMembers: 12
-      team: []
+        - name: Wentao
+          role: Tech Lead
+          avatar: '/avatars/wentao.png'
+        - name: Timothy
+          role: Data Scientist
+          avatar: '/avatars/timothy.png'
+        - name: Claire
+          role: Data Scientist
+          avatar: '/avatars/claire.png'
       monthlyData:
         - month: Jan
-          usage: 24000
-          activeUsers: 1050
+          usage: 468
+          activeUsers: 468
         - month: Feb
-          usage: 26000
-          activeUsers: 1080
+          usage: 2688
+          activeUsers: 2688
         - month: Mar
-          usage: 28000
-          activeUsers: 1100
-      usageDimensions: []
-    - quarter: Q4 2024
-      activeUsers: 950
-      usage: 65000
-      teamMembers: 10
-      team: []
-      monthlyData:
-        - month: Oct
-          usage: 20000
-          activeUsers: 900
-        - month: Nov
-          usage: 22000
-          activeUsers: 930
-        - month: Dec
-          usage: 23000
-          activeUsers: 950
-      usageDimensions: []
-    - quarter: Q3 2024
-      activeUsers: 800
-      usage: 55000
-      teamMembers: 10
-      team: []
-      monthlyData:
-        - month: Jul
-          usage: 17000
-          activeUsers: 750
-        - month: Aug
-          usage: 18000
-          activeUsers: 780
-        - month: Sep
-          usage: 20000
-          activeUsers: 800
-      usageDimensions: []
-  changeLogs:
-    - quarter: Q2 2025
-      updates:
-        - Integrated AI-driven behavioral analysis
-        - Improved latency by 15%
-        - New dashboard for risk analysts
-    - quarter: Q1 2025
-      updates:
-        - Added support for multi-currency scoring
-        - Enhanced data encryption at rest
-    - quarter: Q4 2024
-      updates:
-        - Initial pilot launch for corporate customers
-  feedbacks:
-    - user: John Tan
-      comment: The new dashboard is much faster!
-      date: '2025-03-15'
-    - user: Sarah Lim
-      comment: Would love to see more granular reports.
-      date: '2025-02-10'
+          usage: 3265
+          activeUsers: 3265
+      usageDimensions:
+        - name: Total Requests
+          value: 5.0K
+          change: '-'
+          isPositive: true
+          primary: true
+          description: Total component requests across all services (Jan 392, Feb 2188, Mar 2394)
+        - name: Pages Parsed
+          value: 68.7K
+          change: '-'
+          isPositive: true
+          primary: true
+          description: Total number of pages parsed and indexed
+        - name: Parse Requests
+          value: 2.3K
+          change: '-'
+          isPositive: true
+          primary: false
+          description: Quarterly parse component requests (Jan 228, Feb 1167, Mar 942)
+        - name: Chunk Requests
+          value: 1.5K
+          change: '-'
+          isPositive: true
+          primary: false
+          description: Quarterly chunk component requests (Jan 76, Feb 508, Mar 871)
+        - name: Embed Requests
+          value: 1.2K
+          change: '-'
+          isPositive: true
+          primary: false
+          description: Quarterly embed component requests (Jan 76, Feb 505, Mar 581)
+  changeLogs: []
+  feedbacks: []
+
 - id: '2'
-  title: FraudGuard Pro
-  category: Fraud
-  sinceDate: Mar 2023
+  title: DS-Spine
+  category: Central Service
+  sinceDate: Apr 2023
   activeUsersLabel: Active Users
-  description: Machine learning powered fraud detection system protecting customer accounts from unauthorized access.
-  logo: "\U0001F50D"
-  why: Rising sophisticated phishing and account takeover attacks required a more proactive defense mechanism.
-  what: An AI-first fraud detection platform that monitors login patterns and unusual transaction behaviors.
+  description: Ready-to-use patterns and connectors optimized for the OCBC environment to accelerate delivery
+  logo: "\U0001F4DA"
+  why: AI engineers needed a common foundation of reusable patterns and connectors to avoid reinventing the wheel across projects.
+  what: Starter Kit for all AI Engineers for Speed to Value
   metrics:
-    - quarter: Q2 2025
-      activeUsers: 5000
-      usage: 120000
-      teamMembers: 15
+    - quarter: Q1 2026
+      activeUsers: 0
+      usage: 0
+      teamMembers: 3
       team:
-        - name: Eve
-          role: PM
-          avatar: 'https://picsum.photos/seed/eve/100/100'
-        - name: Frank
-          role: Engineer
-          avatar: 'https://picsum.photos/seed/frank/100/100'
+        - name: Wentao
+          role: Tech Lead
+          avatar: '/avatars/wentao.png'
+        - name: Lisa
+          role: Data Scientist
+          avatar: '/avatars/lisa.png'
+        - name: Weiyang
+          role: Data Scientist
+          avatar: '/avatars/weiyang.png'
       monthlyData:
-        - month: Apr
-          usage: 38000
-          activeUsers: 4900
-        - month: May
-          usage: 40000
-          activeUsers: 4950
-        - month: Jun
-          usage: 42000
-          activeUsers: 5000
+        - month: Jan
+          usage: 0
+          activeUsers: 0
+        - month: Feb
+          usage: 0
+          activeUsers: 0
+        - month: Mar
+          usage: 0
+          activeUsers: 0
       usageDimensions:
-        - name: Logins Monitored
-          value: 1.2M
-          change: +15%
+        - name: Projects Using DS-Spine
+          value: '-'
+          change: '-'
           isPositive: true
-          description: Total number of login attempts analyzed
-        - name: Threats Blocked
-          value: 4.5K
-          change: +8%
+          primary: true
+          description: Number of projects currently using DS-Spine
+        - name: Reusable Components
+          value: '-'
+          change: '-'
           isPositive: true
-          description: Confirmed fraud attempts prevented
-    - quarter: Q1 2025
-      activeUsers: 4800
-      usage: 115000
-      teamMembers: 15
-      team: []
-      monthlyData: []
-      usageDimensions: []
-    - quarter: Q4 2024
-      activeUsers: 4200
-      usage: 105000
-      teamMembers: 14
-      team: []
-      monthlyData: []
-      usageDimensions: []
-    - quarter: Q3 2024
-      activeUsers: 3500
-      usage: 90000
-      teamMembers: 12
-      team: []
-      monthlyData: []
-      usageDimensions: []
+          primary: true
+          description: Number of reusable components available
   changeLogs:
     - quarter: Q2 2025
       updates:
-        - Biometric verification integration
-        - Reduced false positive rate by 20%
+        - Added 15 new connector templates
+        - Performance benchmarking toolkit
     - quarter: Q1 2025
       updates:
-        - Real-time SMS alerts for suspicious logins
+        - Initial release of reusable ML pipelines
   feedbacks:
-    - user: David Lee
-      comment: Saved me from a potential scam last week!
-      date: '2025-03-20'
+    - user: Rachel Tan
+      comment: Saved our team weeks of setup time!
+      date: '2025-03-10'
+
 - id: '3'
-  title: CoreConnect API
+  title: Smart Search
   category: Central Service
-  sinceDate: Jun 2022
+  sinceDate: Aug 2023
   activeUsersLabel: Active Users
-  description: Unified API gateway for internal services to access core banking data securely.
-  logo: "\U0001F50C"
-  why: Legacy systems were difficult to integrate with. We needed a standardized way for new apps to talk to the core.
-  what: 'A RESTful API gateway providing secure, audited access to customer, account, and transaction data.'
+  description: Unified, secure search endpoint optimized for precise information retrieval from vast data
+  logo: "\U0001F50D"
+  why: Teams needed a single, reliable search endpoint instead of building custom search solutions for each application.
+  what: Unified Info Retrieval Gateway
   metrics:
-    - quarter: Q2 2025
-      activeUsers: 300
-      usage: 2500000
-      teamMembers: 8
+    - quarter: Q1 2026
+      activeUsers: 0
+      usage: 0
+      teamMembers: 3
       team:
-        - name: Grace
-          role: PM
-          avatar: 'https://picsum.photos/seed/grace/100/100'
-        - name: Hank
-          role: Engineer
-          avatar: 'https://picsum.photos/seed/hank/100/100'
+        - name: Wentao
+          role: Tech Lead
+          avatar: '/avatars/wentao.png'
+        - name: Claire
+          role: Data Scientist
+          avatar: '/avatars/claire.png'
+        - name: Zeng Jing
+          role: Data Scientist
+          avatar: '/avatars/zengjing.png'
       monthlyData:
-        - month: Apr
-          usage: 800000
-          activeUsers: 290
-        - month: May
-          usage: 850000
-          activeUsers: 295
-        - month: Jun
-          usage: 850000
-          activeUsers: 300
+        - month: Jan
+          usage: 0
+          activeUsers: 0
+        - month: Feb
+          usage: 0
+          activeUsers: 0
+        - month: Mar
+          usage: 0
+          activeUsers: 0
       usageDimensions:
-        - name: API Calls
-          value: 2.5M
-          change: +20%
+        - name: Number of Requests
+          value: '-'
+          change: '-'
           isPositive: true
-          description: Total number of API requests processed
-        - name: Avg Latency
-          value: 45ms
-          change: '-5ms'
-          isPositive: true
-          description: Average response time for API calls
-    - quarter: Q1 2025
-      activeUsers: 280
-      usage: 2200000
-      teamMembers: 8
-      team: []
-      monthlyData: []
-      usageDimensions: []
-    - quarter: Q4 2024
-      activeUsers: 250
-      usage: 1800000
-      teamMembers: 7
-      team: []
-      monthlyData: []
-      usageDimensions: []
-    - quarter: Q3 2024
-      activeUsers: 220
-      usage: 1500000
-      teamMembers: 6
-      team: []
-      monthlyData: []
-      usageDimensions: []
+          primary: true
+          description: Total search requests processed
   changeLogs:
     - quarter: Q2 2025
       updates:
-        - GraphQL support added
-        - Rate limiting enhancements
+        - Semantic search with vector embeddings
+        - Multi-language query support
     - quarter: Q1 2025
       updates:
-        - New developer portal documentation
+        - Added fuzzy matching and typo tolerance
   feedbacks:
-    - user: Kevin Ng
-      comment: Documentation is top-notch.
-      date: '2025-01-05'
+    - user: James Ong
+      comment: Search relevance has improved dramatically.
+      date: '2025-02-28'
+
 - id: '4'
-  title: IdentityVault
+  title: Intent Classification
   category: Central Service
-  sinceDate: Sep 2023
+  sinceDate: Nov 2023
   activeUsersLabel: Active Users
-  description: Secure storage and management of customer identity documents and KYC data.
-  logo: "\U0001F194"
-  why: To centralize KYC documents and ensure compliance with data privacy regulations across all branches.
-  what: 'A secure, encrypted vault for storing and retrieving customer identity proofs with strict access controls.'
+  description: Unified approach to turn customer intent to action (e.g. service or response)
+  logo: "\U0001F4CB"
+  why: Chatbot teams needed a consistent way to classify customer intents and route them to the correct service or response.
+  what: Controlled Response for Chatbot
   metrics:
     - quarter: Q2 2025
-      activeUsers: 1500
-      usage: 45000
-      teamMembers: 6
+      activeUsers: 2100
+      usage: 950000
+      teamMembers: 3
       team:
-        - name: Ivy
-          role: PM
-          avatar: 'https://picsum.photos/seed/ivy/100/100'
-        - name: Jack
-          role: Engineer
-          avatar: 'https://picsum.photos/seed/jack/100/100'
+        - name: Wentao
+          role: Tech Lead
+          avatar: '/avatars/wentao.png'
+        - name: Geyu
+          role: Data Scientist
+          avatar: '/avatars/geyu.png'
+        - name: Zeng Jing
+          role: Data Scientist
+          avatar: '/avatars/zengjing.png'
       monthlyData:
         - month: Apr
-          usage: 14000
-          activeUsers: 1450
+          usage: 290000
+          activeUsers: 1980
         - month: May
-          usage: 15000
-          activeUsers: 1480
+          usage: 320000
+          activeUsers: 2050
         - month: Jun
-          usage: 16000
-          activeUsers: 1500
+          usage: 340000
+          activeUsers: 2100
       usageDimensions:
-        - name: Docs Stored
-          value: 45K
-          change: +10%
+        - name: Intents Classified
+          value: 950K
+          change: +25%
           isPositive: true
-          description: Total number of identity documents stored
-        - name: KYC Checks
-          value: 12K
-          change: +5%
+          primary: true
+          description: Total customer intents processed
+        - name: Accuracy Rate
+          value: 94.2%
+          change: +2.1%
           isPositive: true
-          description: Total number of KYC verification requests
+          primary: true
+          description: Classification accuracy across all intents
     - quarter: Q1 2025
-      activeUsers: 1400
-      usage: 42000
+      activeUsers: 1800
+      usage: 780000
       teamMembers: 6
       team: []
       monthlyData: []
       usageDimensions: []
     - quarter: Q4 2024
-      activeUsers: 1200
-      usage: 38000
-      teamMembers: 5
+      activeUsers: 1400
+      usage: 580000
+      teamMembers: 6
       team: []
       monthlyData: []
       usageDimensions: []
     - quarter: Q3 2024
       activeUsers: 1000
-      usage: 32000
+      usage: 400000
       teamMembers: 5
       team: []
       monthlyData: []
@@ -335,6 +251,330 @@
   changeLogs:
     - quarter: Q2 2025
       updates:
-        - Auto-redaction of sensitive fields
-        - Audit log export
-  feedbacks: []
+        - Added multi-turn conversation context
+        - New intent categories for loan products
+    - quarter: Q1 2025
+      updates:
+        - Improved fallback routing logic
+  feedbacks:
+    - user: Wei Lin
+      comment: The chatbot responses feel much more natural now.
+      date: '2025-03-05'
+
+- id: '5'
+  title: Format-AI*
+  category: Central Service
+  sinceDate: Feb 2024
+  activeUsersLabel: Active Users
+  description: Layout-aware OCR and automated Keyword Extraction with multilingual support
+  logo: "\U0001F4C4"
+  why: Manual document processing was slow and error-prone, especially for multilingual documents across regional branches.
+  what: Document Intelligence
+  metrics:
+    - quarter: Q2 2025
+      activeUsers: 1600
+      usage: 220000
+      teamMembers: 2
+      team:
+        - name: Wentao
+          role: Tech Lead
+          avatar: '/avatars/wentao.png'
+        - name: Geyu
+          role: Data Scientist
+          avatar: '/avatars/geyu.png'
+      monthlyData:
+        - month: Apr
+          usage: 68000
+          activeUsers: 1500
+        - month: May
+          usage: 72000
+          activeUsers: 1550
+        - month: Jun
+          usage: 80000
+          activeUsers: 1600
+      usageDimensions:
+        - name: Documents Processed
+          value: 220K
+          change: +30%
+          isPositive: true
+          primary: true
+          description: Total documents scanned and extracted
+        - name: Languages Supported
+          value: '12'
+          change: +3
+          isPositive: true
+          primary: true
+          description: Number of languages supported for OCR
+    - quarter: Q1 2025
+      activeUsers: 1300
+      usage: 170000
+      teamMembers: 8
+      team: []
+      monthlyData: []
+      usageDimensions: []
+    - quarter: Q4 2024
+      activeUsers: 950
+      usage: 120000
+      teamMembers: 7
+      team: []
+      monthlyData: []
+      usageDimensions: []
+    - quarter: Q3 2024
+      activeUsers: 600
+      usage: 75000
+      teamMembers: 5
+      team: []
+      monthlyData: []
+      usageDimensions: []
+  changeLogs:
+    - quarter: Q2 2025
+      updates:
+        - Added support for handwritten text recognition
+        - Improved table extraction accuracy by 25%
+    - quarter: Q1 2025
+      updates:
+        - Malay and Tamil language support added
+  feedbacks:
+    - user: Priya Kumar
+      comment: Handles our multilingual forms perfectly.
+      date: '2025-04-01'
+
+- id: '6'
+  title: Speech-to-Text
+  category: Central Service
+  sinceDate: May 2024
+  activeUsersLabel: Active Users
+  description: Speech to text with Diarization (speaker labeling) and Multilingual support
+  logo: "\U0001F3A4"
+  why: Contact centers needed automated transcription with speaker identification to improve service quality and compliance monitoring.
+  what: Audio/Video Intelligence
+  metrics:
+    - quarter: Q2 2025
+      activeUsers: 900
+      usage: 150000
+      teamMembers: 2
+      team:
+        - name: Wentao
+          role: Tech Lead
+          avatar: '/avatars/wentao.png'
+        - name: Geyu
+          role: Data Scientist
+          avatar: '/avatars/geyu.png'
+      monthlyData:
+        - month: Apr
+          usage: 45000
+          activeUsers: 840
+        - month: May
+          usage: 50000
+          activeUsers: 870
+        - month: Jun
+          usage: 55000
+          activeUsers: 900
+      usageDimensions:
+        - name: Hours Transcribed
+          value: 8.5K
+          change: +35%
+          isPositive: true
+          primary: true
+          description: Total audio hours transcribed
+        - name: Accuracy Rate
+          value: 96.1%
+          change: +1.5%
+          isPositive: true
+          primary: true
+          description: Word-level transcription accuracy
+    - quarter: Q1 2025
+      activeUsers: 700
+      usage: 110000
+      teamMembers: 5
+      team: []
+      monthlyData: []
+      usageDimensions: []
+    - quarter: Q4 2024
+      activeUsers: 450
+      usage: 65000
+      teamMembers: 4
+      team: []
+      monthlyData: []
+      usageDimensions: []
+    - quarter: Q3 2024
+      activeUsers: 200
+      usage: 28000
+      teamMembers: 3
+      team: []
+      monthlyData: []
+      usageDimensions: []
+  changeLogs:
+    - quarter: Q2 2025
+      updates:
+        - Real-time streaming transcription
+        - Speaker diarization for up to 10 speakers
+    - quarter: Q1 2025
+      updates:
+        - Added Mandarin and Cantonese models
+  feedbacks:
+    - user: Marcus Teo
+      comment: Diarization accuracy is impressive for our call reviews.
+      date: '2025-03-18'
+
+- id: '7'
+  title: Cross Checking AI
+  category: Risk
+  sinceDate: Jul 2024
+  activeUsersLabel: Active Users
+  description: Analyzes external requirements or policies to cross-validate the bank's compliance posture
+  logo: "\U0001F4CB"
+  why: Compliance teams spent excessive time manually comparing regulatory updates against internal policies.
+  what: Policy Compliance Check
+  metrics:
+    - quarter: Q2 2025
+      activeUsers: 650
+      usage: 42000
+      teamMembers: 3
+      team:
+        - name: Wentao
+          role: Tech Lead
+          avatar: '/avatars/wentao.png'
+        - name: Geyu
+          role: Data Scientist
+          avatar: '/avatars/geyu.png'
+        - name: Weiyang
+          role: Data Scientist
+          avatar: '/avatars/weiyang.png'
+      monthlyData:
+        - month: Apr
+          usage: 12000
+          activeUsers: 600
+        - month: May
+          usage: 14000
+          activeUsers: 630
+        - month: Jun
+          usage: 16000
+          activeUsers: 650
+      usageDimensions:
+        - name: Policies Checked
+          value: 42K
+          change: +28%
+          isPositive: true
+          primary: true
+          description: Total policy documents cross-validated
+        - name: Gaps Found
+          value: 1.2K
+          change: +15%
+          isPositive: true
+          primary: true
+          description: Compliance gaps identified for review
+    - quarter: Q1 2025
+      activeUsers: 480
+      usage: 30000
+      teamMembers: 6
+      team: []
+      monthlyData: []
+      usageDimensions: []
+    - quarter: Q4 2024
+      activeUsers: 300
+      usage: 18000
+      teamMembers: 5
+      team: []
+      monthlyData: []
+      usageDimensions: []
+    - quarter: Q3 2024
+      activeUsers: 150
+      usage: 8000
+      teamMembers: 4
+      team: []
+      monthlyData: []
+      usageDimensions: []
+  changeLogs:
+    - quarter: Q2 2025
+      updates:
+        - MAS regulatory framework auto-import
+        - Side-by-side policy comparison view
+    - quarter: Q1 2025
+      updates:
+        - Initial launch with core compliance rules
+  feedbacks:
+    - user: Amanda Goh
+      comment: Cut our compliance review time in half.
+      date: '2025-03-22'
+
+- id: '8'
+  title: Frontier AI
+  category: Central Service
+  sinceDate: Oct 2024
+  activeUsersLabel: Active Users
+  description: AI Product Catalogue, Access management, Usage track, Self-service. For both Chatbot and Non-Chatbot
+  logo: "\U0001F5A5\uFE0F"
+  why: Teams needed a unified portal to discover, access, and manage AI products without navigating multiple systems.
+  what: Unified UI Solution for AI Native Apps
+  metrics:
+    - quarter: Q2 2025
+      activeUsers: 1800
+      usage: 95000
+      teamMembers: 3
+      team:
+        - name: Wentao
+          role: Tech Lead
+          avatar: '/avatars/wentao.png'
+        - name: Weiyang
+          role: Data Scientist
+          avatar: '/avatars/weiyang.png'
+        - name: Lisa
+          role: Data Scientist
+          avatar: '/avatars/lisa.png'
+      monthlyData:
+        - month: Apr
+          usage: 28000
+          activeUsers: 1650
+        - month: May
+          usage: 32000
+          activeUsers: 1730
+        - month: Jun
+          usage: 35000
+          activeUsers: 1800
+      usageDimensions:
+        - name: Apps Managed
+          value: 85
+          change: +20
+          isPositive: true
+          primary: true
+          description: Total AI applications tracked on the platform
+        - name: Self-Service Requests
+          value: 4.2K
+          change: +40%
+          isPositive: true
+          primary: true
+          description: Access requests handled without manual intervention
+    - quarter: Q1 2025
+      activeUsers: 1400
+      usage: 68000
+      teamMembers: 10
+      team: []
+      monthlyData: []
+      usageDimensions: []
+    - quarter: Q4 2024
+      activeUsers: 800
+      usage: 35000
+      teamMembers: 8
+      team: []
+      monthlyData: []
+      usageDimensions: []
+    - quarter: Q3 2024
+      activeUsers: 350
+      usage: 12000
+      teamMembers: 6
+      team: []
+      monthlyData: []
+      usageDimensions: []
+  changeLogs:
+    - quarter: Q2 2025
+      updates:
+        - Self-service access request workflow
+        - Usage analytics dashboard
+    - quarter: Q1 2025
+      updates:
+        - Initial product catalogue with 50+ AI apps
+  feedbacks:
+    - user: Timothy Loh
+      comment: Finally one place to manage all our AI tools.
+      date: '2025-03-25'

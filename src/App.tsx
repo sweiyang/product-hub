@@ -2,7 +2,8 @@ import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, 
-  ChevronRight, 
+  ChevronRight,
+  ChevronDown,
   ArrowLeft, 
   BarChart3, 
   History, 
@@ -14,7 +15,6 @@ import {
   LayoutGrid,
   Star,
   Cpu,
-  Heart,
   ShieldCheck,
   Zap,
   Globe,
@@ -49,13 +49,12 @@ export default function App() {
     { id: 'All', label: 'All', icon: LayoutGrid },
     { id: 'Central Service', label: 'Central Service', icon: Globe },
     { id: 'Risk', label: 'Risk', icon: ShieldCheck },
-    { id: 'Fraud', label: 'Fraud', icon: Zap },
   ] as const;
 
   const filteredProducts = useMemo(() => {
     return PRODUCTS.filter(p => {
       const matchesCategory = selectedCategory === 'All' || 
-                             (selectedCategory === 'Featured' ? p.id === '1' || p.id === '2' : p.category === selectedCategory);
+                             (selectedCategory === 'Featured' ? true : p.category === selectedCategory);
       const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                            p.description.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
@@ -184,23 +183,26 @@ export default function App() {
                     {product.description}
                   </p>
 
-                  {/* Quick Stats Row */}
-                  <div className="grid grid-cols-2 gap-3 mb-8 p-5 bg-ocbc-panel/40 rounded-2xl border border-ocbc-border/40 group-hover:bg-ocbc-panel/60 transition-colors">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1.5 text-[9px] font-black text-ocbc-secondary/60 uppercase tracking-widest">
-                        <Users className="w-3 h-3" />
-                        <span>{product.activeUsersLabel || 'Active Users'}</span>
+                  {/* Primary Metric Showcase */}
+                  {(() => {
+                    const primaryDim = product.metrics[0].usageDimensions.find(d => d.primary !== false);
+                    if (!primaryDim) return null;
+                    return (
+                      <div className="mb-8 p-6 bg-slate-50/40 rounded-[2rem] border border-slate-100/60 group-hover:bg-white group-hover:shadow-lg group-hover:border-slate-200 transition-all duration-300 text-center relative overflow-hidden">
+                        <div className="absolute inset-0 bg-red-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                        <div className="relative z-10">
+                          <div className="text-4xl font-black text-ocbc-red tracking-tighter mb-2 group-hover:scale-110 transition-transform duration-300 origin-center">{primaryDim.value}</div>
+                          <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">{primaryDim.name}</p>
+                          {primaryDim.change !== '-' && (
+                            <div className={`inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest ${primaryDim.isPositive ? 'text-green-600' : 'text-red-500'}`}>
+                              {primaryDim.isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                              {primaryDim.change}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <div className="text-lg font-black text-ocbc-text">{(product.metrics[0].activeUsers / 1000).toFixed(1)}K</div>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1.5 text-[9px] font-black text-ocbc-secondary/60 uppercase tracking-widest">
-                        <Activity className="w-3 h-3" />
-                        <span>Usage</span>
-                      </div>
-                      <div className="text-lg font-black text-ocbc-text">{(product.metrics[0].usage / 1000).toFixed(0)}K</div>
-                    </div>
-                  </div>
+                    );
+                  })()}
 
                   <div className="flex items-center justify-between pt-4 border-t border-ocbc-border/50">
                     <span className="text-[10px] font-black text-ocbc-red uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
@@ -221,8 +223,10 @@ export default function App() {
 }
 
 function ProductDetail({ product, onBack }: { product: Product, onBack: () => void }) {
-  const [activeTab, setActiveTab] = useState<'intro' | 'metrics' | 'changelog' | 'feedback'>('intro');
+  const [activeTab, setActiveTab] = useState<'intro' | 'changelog' | 'feedback'>('intro');
   const [selectedQuarter, setSelectedQuarter] = useState(product.metrics[0].quarter);
+  const [showTrends, setShowTrends] = useState(false);
+  const [visibleMetrics, setVisibleMetrics] = useState<Set<number>>(new Set([0]));
 
   const currentMetric = useMemo(() => {
     return product.metrics.find(m => m.quarter === selectedQuarter) || product.metrics[0];
@@ -230,7 +234,6 @@ function ProductDetail({ product, onBack }: { product: Product, onBack: () => vo
 
   const tabs = [
     { id: 'intro', label: 'OVERVIEW', icon: Info },
-    { id: 'metrics', label: 'METRICS', icon: BarChart3 },
     { id: 'changelog', label: 'UPDATES', icon: History },
     { id: 'feedback', label: 'FEEDBACK', icon: MessageSquare },
   ] as const;
@@ -344,338 +347,276 @@ function ProductDetail({ product, onBack }: { product: Product, onBack: () => vo
                 </div>
               </div>
 
-              {/* Impressive Quarter Overview - Bento Grid Style */}
-              <div className="space-y-12 pt-12 border-t border-slate-100">
+              {/* Key Metrics Section */}
+              <div className="space-y-8 pt-12 border-t border-slate-100">
                 <div className="flex items-end justify-between">
                   <div className="space-y-2">
-                    <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase">Quarterly Overview</h2>
-                    <p className="text-slate-400 font-bold text-xs tracking-[0.3em] uppercase">Performance Snapshot • {product.metrics[0].quarter}</p>
+                    <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase">Key Metrics</h2>
+                    <p className="text-slate-400 font-bold text-xs tracking-[0.3em] uppercase">Performance Snapshot • {currentMetric.quarter}</p>
                   </div>
-                  <div className="hidden md:block">
-                    <div className="px-6 py-2 bg-slate-900 text-white text-[10px] font-black rounded-full tracking-[0.2em] uppercase">
+                  <div className="flex items-center gap-4">
+                    <span className="px-4 py-1.5 bg-slate-50 text-slate-500 text-[10px] font-black rounded-full border border-slate-200 uppercase tracking-widest">
                       Live Data
-                    </div>
-                  </div>
-                </div>
-
-                <motion.div 
-                  initial="hidden"
-                  animate="visible"
-                  variants={{
-                    hidden: { opacity: 0 },
-                    visible: {
-                      opacity: 1,
-                      transition: {
-                        staggerChildren: 0.1
-                      }
-                    }
-                  }}
-                  className="grid grid-cols-1 md:grid-cols-12 gap-6"
-                >
-                  {/* Main Usage Card - Large */}
-                  <motion.div 
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: { opacity: 1, y: 0 }
-                    }}
-                    whileHover={{ y: -5 }}
-                    className="md:col-span-8 bg-slate-900 rounded-[3rem] p-10 text-white relative overflow-hidden group shadow-2xl shadow-slate-900/20"
-                  >
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-ocbc-red/20 rounded-full blur-[100px] -mr-32 -mt-32 group-hover:bg-ocbc-red/30 transition-colors" />
-                    <div className="relative z-10 h-full flex flex-col justify-between">
-                      <div className="flex items-center justify-between mb-12">
-                        <div className="w-14 h-14 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center">
-                          <Activity className="w-7 h-7 text-ocbc-red" />
-                        </div>
-                        <div className="text-right">
-                          <div className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Status</div>
-                          <div className="flex items-center gap-2 text-green-400 text-xs font-black uppercase tracking-widest">
-                            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                            Trending Up
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 items-end">
-                        <div className="space-y-2">
-                          <div className="text-7xl font-black tracking-tighter">{(currentMetric.usage / 1000).toFixed(0)}<span className="text-3xl text-white/30 ml-1">K</span></div>
-                          <div className="space-y-1">
-                            <p className="text-white/40 text-[10px] font-black uppercase tracking-widest leading-tight">Weekly Active Users</p>
-                            <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">-8.2% vs Q3</p>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="text-7xl font-black tracking-tighter">{(currentMetric.usage / 2.5 / 1000).toFixed(0)}<span className="text-3xl text-white/30 ml-1">K</span></div>
-                          <div className="space-y-1">
-                            <p className="text-white/40 text-[10px] font-black uppercase tracking-widest leading-tight">Total Exercises</p>
-                            <p className="text-green-400 text-[10px] font-black uppercase tracking-widest">+2.4% vs Q3</p>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="text-7xl font-black tracking-tighter">{(currentMetric.usage / 100000).toFixed(1)}<span className="text-3xl text-white/30 ml-1">M</span></div>
-                          <div className="space-y-1">
-                            <p className="text-white/40 text-[10px] font-black uppercase tracking-widest leading-tight">Hours Logged</p>
-                            <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">-10.1% vs Q3</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                  {/* Team Card - Tall */}
-                  <motion.div 
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: { opacity: 1, y: 0 }
-                    }}
-                    whileHover={{ y: -5 }}
-                    className="md:col-span-4 bg-ocbc-red rounded-[3rem] p-10 text-white shadow-2xl shadow-ocbc-red/20 flex flex-col justify-between relative overflow-hidden group"
-                  >
-                    <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/20 to-transparent" />
-                    <div className="relative z-10">
-                      <div className="w-14 h-14 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-8">
-                        <Users className="w-7 h-7 text-white" />
-                      </div>
-                      <h3 className="text-xs font-black text-white/60 uppercase tracking-[0.3em] mb-4">The Squad</h3>
-                      <div className="text-8xl font-black tracking-tighter mb-8 group-hover:scale-110 transition-transform origin-left">{currentMetric.teamMembers}</div>
-                    </div>
-                    <div className="relative z-10 space-y-6">
-                      <div className="flex -space-x-4">
-                        {currentMetric.team.length > 0 ? (
-                          currentMetric.team.slice(0, 6).map((member, i) => (
-                            <img 
-                              key={i}
-                              src={member.avatar} 
-                              alt={member.name}
-                              className="w-14 h-14 rounded-full border-4 border-ocbc-red shadow-xl object-cover"
-                              referrerPolicy="no-referrer"
-                            />
-                          ))
-                        ) : (
-                          [...Array(Math.min(currentMetric.teamMembers, 6))].map((_, i) => (
-                            <img 
-                              key={i}
-                              src={`https://picsum.photos/seed/${product.id}-${i}-team/100/100`} 
-                              className="w-14 h-14 rounded-full border-4 border-ocbc-red shadow-xl object-cover"
-                              referrerPolicy="no-referrer"
-                            />
-                          ))
-                        )}
-                        {currentMetric.teamMembers > Math.max(currentMetric.team.length, 6) && (
-                          <div className="w-14 h-14 rounded-full border-4 border-ocbc-red bg-white/20 backdrop-blur-md flex items-center justify-center text-xs font-black text-white shadow-xl">
-                            +{currentMetric.teamMembers - Math.max(currentMetric.team.length, 6)}
-                          </div>
-                        )}
-                      </div>
-                      <p className="text-white/80 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
-                        Cross-functional team driving innovation across OCBC internal ecosystem.
-                      </p>
-                    </div>
-                  </motion.div>
-
-
-                  {/* CSAT Card */}
-                  <motion.div 
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: { opacity: 1, y: 0 }
-                    }}
-                    whileHover={{ y: -5 }}
-                    className="md:col-span-4 bg-slate-50 rounded-[3rem] p-10 border border-slate-200 shadow-inner flex flex-col justify-between group"
-                  >
-                    <div className="flex items-center justify-between mb-8">
-                      <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm group-hover:text-ocbc-red transition-colors">
-                        <Heart className="w-7 h-7" />
-                      </div>
-                      <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-3 h-3 fill-ocbc-red text-ocbc-red" />
+                    </span>
+                    <div className="relative">
+                      <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <select
+                        className="bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-3 text-xs font-black text-slate-700 outline-none focus:ring-4 focus:ring-ocbc-red/10 appearance-none cursor-pointer uppercase tracking-widest"
+                        value={selectedQuarter}
+                        onChange={(e) => setSelectedQuarter(e.target.value)}
+                      >
+                        {product.metrics.map(m => (
+                          <option key={m.quarter} value={m.quarter}>{m.quarter}</option>
                         ))}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-1">
-                        <div className="text-3xl font-black text-slate-900 tracking-tighter">94.9%</div>
-                        <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest">User CSAT</p>
-                      </div>
-                      <div className="space-y-1">
-                        <div className="text-3xl font-black text-slate-900 tracking-tighter">62.8%</div>
-                        <p className="text-slate-400 text-[9px] font-black uppercase tracking-widest">Admin CSAT</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              </div>
-            </motion.div>
-          )}
-
-          {activeTab === 'metrics' && (
-            <motion.div
-              key="metrics"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="space-y-12"
-            >
-              {/* Trend Chart */}
-              <div className="bg-white p-12 rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/50">
-                <div className="flex items-center justify-between mb-12">
-                  <div>
-                    <h3 className="text-2xl font-black text-slate-900 tracking-tight mb-2">Performance Trends</h3>
-                    <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Monthly data grouped by quarter</p>
-                  </div>
-                  <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.2em]">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-ocbc-red" />
-                      <span className="text-slate-500">Usage</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-slate-300" />
-                      <span className="text-slate-500">Active Users</span>
+                      </select>
                     </div>
                   </div>
                 </div>
-                <div className="h-[400px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={[...product.metrics].reverse().flatMap(q => 
-                      q.monthlyData.length > 0 
-                        ? q.monthlyData.map(m => ({ ...m, quarter: q.quarter }))
-                        : [{ month: q.quarter, usage: q.usage, activeUsers: q.activeUsers, quarter: q.quarter }]
-                    )}>
-                      <defs>
-                        <linearGradient id="colorUsage" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#ED1C24" stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor="#ED1C24" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                      <XAxis 
-                        dataKey="month" 
-                        axisLine={false} 
-                        tickLine={false} 
-                        tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 800 }}
-                        dy={15}
-                      />
-                      <YAxis hide />
-                      <Tooltip 
-                        contentStyle={{ borderRadius: '20px', border: 'none', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.15)', padding: '16px' }}
-                        labelFormatter={(label, payload) => {
-                          if (payload && payload.length > 0) {
-                            return `${label} (${payload[0].payload.quarter})`;
-                          }
-                          return label;
+
+                {/* Key Metrics (primary) */}
+                {(() => {
+                  const primaryDims = currentMetric.usageDimensions.filter(d => d.primary !== false);
+                  const subDims = currentMetric.usageDimensions.filter(d => d.primary === false);
+                  return (
+                    <>
+                      <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                          hidden: { opacity: 0 },
+                          visible: { opacity: 1, transition: { staggerChildren: 0.08 } }
                         }}
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="usage" 
-                        stroke="#ED1C24" 
-                        strokeWidth={4}
-                        fillOpacity={1} 
-                        fill="url(#colorUsage)" 
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="activeUsers" 
-                        stroke="#94a3b8" 
-                        strokeWidth={2}
-                        fill="transparent"
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              {/* Quarter Selector Stats */}
-              <div className="bg-white p-12 rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/50">
-                <div className="flex items-center justify-between mb-12">
-                  <h3 className="text-2xl font-black text-slate-900 tracking-tight">Deep Dive Statistics</h3>
-                  <div className="relative">
-                    <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                    <select 
-                      className="bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-6 py-3 text-xs font-black text-slate-700 outline-none focus:ring-4 focus:ring-ocbc-red/10 appearance-none cursor-pointer uppercase tracking-widest"
-                      value={selectedQuarter}
-                      onChange={(e) => setSelectedQuarter(e.target.value)}
-                    >
-                      {product.metrics.map(m => (
-                        <option key={m.quarter} value={m.quarter}>{m.quarter}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                  <div className="space-y-8 bg-slate-50/50 p-8 rounded-[2.5rem] border border-slate-100">
-                    <div className="flex items-center justify-between">
-                      <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm">
-                        <Users className="w-8 h-8 text-ocbc-red" />
-                      </div>
-                      <div className="text-5xl font-black text-slate-900 tracking-tighter">{currentMetric.teamMembers}</div>
-                    </div>
-                    <div>
-                      <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Core Team Members</div>
-                      <div className="flex flex-wrap gap-3">
-                        {currentMetric.team.map((member, i) => (
-                          <div key={i} className="group relative">
-                            <img 
-                              src={member.avatar} 
-                              alt={member.name}
-                              className="w-12 h-12 rounded-2xl border-2 border-white shadow-md group-hover:scale-110 transition-transform cursor-help"
-                              referrerPolicy="no-referrer"
-                            />
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-slate-900 text-white text-[9px] font-black rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20 pointer-events-none uppercase tracking-widest">
-                              {member.name} • {member.role}
+                        className={`grid grid-cols-1 sm:grid-cols-2 ${primaryDims.length >= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-5`}
+                      >
+                        {primaryDims.length > 0 ? primaryDims.map((dim, i) => (
+                          <motion.div
+                            key={i}
+                            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+                            whileHover={{ y: -5 }}
+                            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                            className="group relative bg-white p-10 rounded-[2.5rem] border border-slate-200/80 text-center cursor-default overflow-hidden hover:shadow-2xl hover:shadow-slate-300/40 hover:border-slate-200 transition-all duration-300"
+                          >
+                            <div className="absolute -top-10 -right-10 w-40 h-40 bg-red-500/5 rounded-full blur-2xl group-hover:bg-red-500/10 transition-colors duration-500 pointer-events-none" />
+                            <div className="relative z-10">
+                              <div className="text-6xl font-black text-ocbc-red tracking-tighter mb-4 group-hover:scale-110 transition-transform duration-300 origin-center">{dim.value}</div>
+                              <p className="text-slate-600 text-[11px] font-black uppercase tracking-[0.2em] mb-3">{dim.name}</p>
+                              {dim.change !== '-' && (
+                                <div className={`inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest ${dim.isPositive ? 'text-green-600' : 'text-red-500'}`}>
+                                  {dim.isPositive ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
+                                  {dim.change}
+                                </div>
+                              )}
                             </div>
-                          </div>
-                        ))}
-                        {currentMetric.teamMembers > currentMetric.team.length && (
-                          <div className="w-12 h-12 rounded-2xl bg-white border-2 border-slate-100 flex items-center justify-center text-[10px] font-black text-slate-400 shadow-sm">
-                            +{currentMetric.teamMembers - currentMetric.team.length}
+                          </motion.div>
+                        )) : (
+                          <div className="col-span-full text-center py-8">
+                            <p className="text-slate-400 text-sm font-bold">No metrics available for this quarter.</p>
                           </div>
                         )}
-                      </div>
-                    </div>
-                  </div>
+                      </motion.div>
 
+                      {/* Sub Metrics */}
+                      {subDims.length > 0 && (
+                        <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          variants={{
+                            hidden: { opacity: 0 },
+                            visible: { opacity: 1, transition: { staggerChildren: 0.05 } }
+                          }}
+                          className={`grid grid-cols-2 sm:grid-cols-3 ${subDims.length >= 4 ? 'lg:grid-cols-4' : subDims.length === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-3'} gap-4`}
+                        >
+                          {subDims.map((dim, i) => (
+                            <motion.div
+                              key={i}
+                              variants={{ hidden: { opacity: 0, y: 15 }, visible: { opacity: 1, y: 0 } }}
+                              whileHover={{ y: -3 }}
+                              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                              className="group relative bg-slate-50 p-6 rounded-2xl border border-slate-100 text-center cursor-default overflow-hidden hover:shadow-lg hover:bg-white hover:border-slate-200 transition-all duration-300"
+                            >
+                              <div className="relative z-10">
+                                <div className="text-3xl font-black text-slate-800 tracking-tighter mb-2 group-hover:text-ocbc-red transition-colors duration-300">{dim.value}</div>
+                                <p className="text-slate-400 text-[9px] font-black uppercase tracking-[0.2em] mb-1">{dim.name}</p>
+                                {dim.change !== '-' && (
+                                  <div className={`inline-flex items-center gap-1 text-[8px] font-black uppercase tracking-widest ${dim.isPositive ? 'text-green-600' : 'text-red-500'}`}>
+                                    {dim.isPositive ? <TrendingUp className="w-2.5 h-2.5" /> : <TrendingDown className="w-2.5 h-2.5" />}
+                                    {dim.change}
+                                  </div>
+                                )}
+                              </div>
+                            </motion.div>
+                          ))}
+                        </motion.div>
+                      )}
+                    </>
+                  );
+                })()}
 
-                  <div className="space-y-8 bg-slate-50/50 p-8 rounded-[2.5rem] border border-slate-100">
-                    <div className="flex items-center justify-between">
-                      <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm">
-                        <Activity className="w-8 h-8 text-ocbc-red" />
+                {/* Collapsible Trends Section */}
+                {currentMetric.monthlyData.length > 0 && currentMetric.usageDimensions.length > 0 && (
+                  <div>
+                    <button
+                      onClick={() => setShowTrends(!showTrends)}
+                      className="w-full flex items-center justify-center gap-3 py-4 text-slate-400 hover:text-slate-600 transition-colors group"
+                    >
+                      <div className="h-px flex-1 bg-slate-200 group-hover:bg-slate-300 transition-colors" />
+                      <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]">
+                        <BarChart3 className="w-4 h-4" />
+                        {showTrends ? 'Hide' : 'Show'} Monthly Trends
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showTrends ? 'rotate-180' : ''}`} />
                       </div>
-                      <div className="text-5xl font-black text-slate-900 tracking-tighter">{(currentMetric.usage / 1000).toFixed(0)}K</div>
-                    </div>
-                    <div>
-                      <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Usage Dimensions</div>
-                      <div className="space-y-4">
-                        {currentMetric.usageDimensions.length > 0 ? currentMetric.usageDimensions.map((dim, i) => (
-                          <div key={i} className="group relative cursor-help">
-                            <div className="flex items-center justify-between">
-                              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{dim.name}</span>
-                              <div className="flex items-center gap-2">
-                                <span className="text-[10px] font-black text-slate-900">{dim.value}</span>
-                                <span className={cn(
-                                  "text-[8px] font-black px-1.5 py-0.5 rounded-full",
-                                  dim.isPositive ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"
-                                )}>
-                                  {dim.change}
-                                </span>
+                      <div className="h-px flex-1 bg-slate-200 group-hover:bg-slate-300 transition-colors" />
+                    </button>
+
+                    <AnimatePresence>
+                      {showTrends && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.4, ease: 'easeInOut' }}
+                          className="overflow-hidden"
+                        >
+                          <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/50 mt-4">
+                            <div className="flex items-center justify-between mb-8">
+                              <div>
+                                <h3 className="text-xl font-black text-slate-900 tracking-tight mb-1">Performance Trends</h3>
+                                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Monthly data • {currentMetric.quarter}</p>
+                              </div>
+                              <div className="flex flex-wrap items-center gap-3">
+                                {currentMetric.usageDimensions.map((dim, i) => {
+                                  const colors = ['#ED1C24', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
+                                  const color = colors[i % colors.length];
+                                  const isVisible = visibleMetrics.has(i);
+                                  return (
+                                    <button
+                                      key={i}
+                                      onClick={() => {
+                                        const next = new Set(visibleMetrics);
+                                        if (isVisible && next.size > 1) {
+                                          next.delete(i);
+                                        } else {
+                                          next.add(i);
+                                        }
+                                        setVisibleMetrics(next);
+                                      }}
+                                      className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border transition-all ${isVisible ? 'border-slate-300 bg-white shadow-sm' : 'border-slate-100 bg-slate-50 opacity-40'}`}
+                                    >
+                                      <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
+                                      {dim.name}
+                                    </button>
+                                  );
+                                })}
                               </div>
                             </div>
-                            <div className="absolute bottom-full left-0 mb-2 px-3 py-1.5 bg-slate-900 text-white text-[9px] font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity w-48 z-20 pointer-events-none leading-relaxed">
-                              {dim.description}
+                            <div className="h-[350px] w-full">
+                              <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={currentMetric.monthlyData.map(m => {
+                                  const point: Record<string, string | number> = { month: m.month };
+                                  currentMetric.usageDimensions.forEach((dim, di) => {
+                                    if (dim.description.includes('Jan') || dim.description.includes('Feb') || dim.description.includes('Mar')) {
+                                      const matches = dim.description.match(/Jan\s+(\d+).*Feb\s+(\d+).*Mar\s+(\d+)/i);
+                                      if (matches) {
+                                        const monthMap: Record<string, number> = { Jan: Number(matches[1]), Feb: Number(matches[2]), Mar: Number(matches[3]) };
+                                        point[`dim_${di}`] = monthMap[m.month] || 0;
+                                      } else {
+                                        point[`dim_${di}`] = m.usage;
+                                      }
+                                    } else {
+                                      point[`dim_${di}`] = m.usage;
+                                    }
+                                  });
+                                  return point;
+                                })}>
+                                  <defs>
+                                    {currentMetric.usageDimensions.map((_, i) => {
+                                      const colors = ['#ED1C24', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
+                                      return (
+                                        <linearGradient key={i} id={`colorDim${i}`} x1="0" y1="0" x2="0" y2="1">
+                                          <stop offset="5%" stopColor={colors[i % colors.length]} stopOpacity={0.1}/>
+                                          <stop offset="95%" stopColor={colors[i % colors.length]} stopOpacity={0}/>
+                                        </linearGradient>
+                                      );
+                                    })}
+                                  </defs>
+                                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                  <XAxis
+                                    dataKey="month"
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 800 }}
+                                    dy={15}
+                                  />
+                                  <YAxis hide />
+                                  <Tooltip
+                                    contentStyle={{ borderRadius: '20px', border: 'none', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.15)', padding: '16px' }}
+                                  />
+                                  {currentMetric.usageDimensions.map((dim, i) => {
+                                    const colors = ['#ED1C24', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
+                                    if (!visibleMetrics.has(i)) return null;
+                                    return (
+                                      <Area
+                                        key={i}
+                                        type="monotone"
+                                        dataKey={`dim_${i}`}
+                                        name={dim.name}
+                                        stroke={colors[i % colors.length]}
+                                        strokeWidth={3}
+                                        fillOpacity={1}
+                                        fill={`url(#colorDim${i})`}
+                                      />
+                                    );
+                                  })}
+                                </AreaChart>
+                              </ResponsiveContainer>
                             </div>
                           </div>
-                        )) : (
-                          <p className="text-[10px] text-slate-400 italic">No dimensions listed for this quarter.</p>
-                        )}
-                      </div>
-                    </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
+                )}
+              </div>
+
+              {/* Team Members Section */}
+              <div className="space-y-8 pt-12 border-t border-slate-100">
+                <div className="flex items-end justify-between">
+                  <div className="space-y-2">
+                    <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase">The Squad</h2>
+                    <p className="text-slate-400 font-bold text-xs tracking-[0.3em] uppercase">{currentMetric.teamMembers} members • {currentMetric.quarter}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-6">
+                  {currentMetric.team.length > 0 ? (
+                    currentMetric.team.map((member, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.05 }}
+                        whileHover={{ y: -5 }}
+                        className="group flex flex-col items-center gap-3 bg-white p-6 rounded-[2rem] border border-slate-200/80 hover:shadow-2xl hover:shadow-slate-300/40 transition-all duration-300 w-36"
+                      >
+                        <img
+                          src={member.avatar}
+                          alt={member.name}
+                          className="w-20 h-20 rounded-full border-4 border-slate-100 shadow-lg object-cover group-hover:scale-105 transition-transform duration-300"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div className="text-center">
+                          <p className="text-sm font-black text-slate-900 tracking-tight">{member.name}</p>
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{member.role}</p>
+                        </div>
+                      </motion.div>
+                    ))
+                  ) : (
+                    <p className="text-slate-400 text-sm font-bold">No team members listed for this quarter.</p>
+                  )}
                 </div>
               </div>
             </motion.div>
           )}
+
 
           {activeTab === 'changelog' && (
             <motion.div

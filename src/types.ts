@@ -1,4 +1,4 @@
-export type Category = 'Featured' | 'All' | 'Central Service' | 'Risk' | 'Fraud';
+export type Category = 'Featured' | 'All' | 'Central Service' | 'Risk';
 
 export interface TeamMember {
   name: string;
@@ -18,6 +18,7 @@ export interface UsageDimension {
   change: string;
   isPositive: boolean;
   description: string;
+  primary?: boolean;
 }
 
 export interface QuarterMetric {
